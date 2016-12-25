@@ -75,7 +75,7 @@
     $scope.addAlbum = function (new_album) {
       if (!new_album.title)
           $scope.add_album_error = "Missing title";
-      else if (!new_album.date || new_album.date.length < 10)
+      else if (!new_album.date || !is_valid_date(new_album.date))
           $scope.add_album_error = "Date not correct"
       else if (!new_album.description)
           $scope.add_album_error = "Missing description";
@@ -88,6 +88,15 @@
       }
     };
   }
+
+function is_valid_date(the_date) {
+  if (the_date.math(/[0-9]{2,4}\/[0-9]{1,2}\/[0-9]{1,2}/)) {
+    var d = new Date(the_date)
+    return !isNaN(d.getTime());
+  } else {
+      return false;
+  }
+}
 </script>
   </body>
 </html>
