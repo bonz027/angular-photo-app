@@ -4,7 +4,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+<!-- Linking CSS -->
+    <link rel="stylesheet" href="css/app.css">
 <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -19,14 +20,18 @@
                               { name: 'thailand1210', title: 'Sun and fun in Thailand', date: '2012-10-15', description: 'I ate entirely too much Thai food and had a great time at the beach' },
                               { name: 'australia1207', title: 'A wedding in Melbourne', date: '2012-07-20', description: 'I went to visit my friends for thier wedding in Aussie land! '},
       ]">
-      <p><input type="text" ng-model="searchFor" size="30"/></p>
+      <p><input placeholder="Type to search..." type="text" ng-model="searchFor" size="30"/></p>
       <p>
         There are {{ albums.length }} albums available to view:
       </p>
-      <ul>
-        <li ng-repeat= "album in albums | filter: searchFor | orderBy: 'date'">
-          {{ album.title }} ({{ album.date }})
-        </li>
-      </ul>
+    <div class="album panel panel-primary" ng-repeat=" album in albums | filter:{ title: searchFor} | orderBy:'date'">
+      <div class="panel-heading">
+        <div style="float: right"> {{ album.date }}</div>
+          {{ album.title }}
+      </div>
+      <div class="description">
+        {{ album.description }}
+      </div>
+    </div>
   </body>
 </html>
