@@ -36,30 +36,35 @@
 
     <h3> Add New Album </h3>
     <div class="album panel panel-default">
-      <div class="panel-heading">
-        <div style="float: right">
-          <input type="text" placeholder="yyyy/mm/dd" size="11" ng-model="adding_album.date"/>
-        </div>
-        <input type="text" placeholder="Title..." size="20" ng-model="adding_album.title"/>
-      </div>
+      <form name="add_album_form" novalidate>
+        <div class="panel-heading">
+          <div class="alert alert-danger" ng-show="add_album_error"> {{ add_album_error }} </div>
 
-      <div class="description">
-        <p>
-          <textarea ng-model="adding_album.description" placeholder="Description..." rows="4" style="width: 100%"></textarea>
-        </p>
-        <p>
-          <input type="text" ng-model="adding_album.name" style="width: 100%"/>
-        </p>
-        <p>
-          <button ng-click="addAlbum(adding_album)" type="button" class="btn btn-success">Add New Album</button>
-        </p>
+              <input type="text" placeholder="Title..." size="20" ng-model="adding_album.title"/>
+            <div style="float: right">
+              <input ng-required="true" ng-minlength="10" type="text" placeholder="yyyy/mm/dd" size="11" ng-model="adding_album.date"/>
+            </div>
+          </div>
+
+          <div class="description">
+            <p>
+              <textarea ng-model="adding_album.description" placeholder="Description..." rows="4" style="width: 100%"></textarea>
+            </p>
+            <p>
+              <input type="text" ng-model="adding_album.name" style="width: 100%"/>
+            </p>
+            <p>
+              <button ng-click="addAlbum(adding_album)" type="button" class="btn btn-success">Add New Album</button>
+            </p>
+         </div>
+       </form>
      </div>
-  </div>
 
 <script type="text/javascript">
   var myApp = angular.module('myApp', [])
   .controller('AlbumListController', AlbumListController)
   function AlbumListController ($scope) {
+    $scope.adding_album = {};
     $scope.adding_album = {};
     $scope.albums = [
         { name: 'madrid1309', title: 'Weekend in Barcelona', date: '2013-09-01', description: 'Fun weekend visiting Barcelona!' },
@@ -68,8 +73,19 @@
         { name: 'australia1207', title: 'A wedding in Melbourne', date: '2012-07-20', description: 'I went to visit my friends for thier wedding in Aussie land! '},
       ];
     $scope.addAlbum = function (new_album) {
-      $scope.albums.push(new_album);
-      $scope.adding_album = {};
+      if (!new_album.title)
+          $scope.add_album_error = "Missing title";
+      else if (!new_album.date || new_album.date.length < 10)
+          $scope.add_album_error = "Date not correct"
+      else if (!new_album.description)
+          $scope.add_album_error = "Missing description";
+      else if (!new_album.name)
+          $scope.add_album_error = "Missing short name";
+      else {
+          $scope.albums.push(new_album);
+          $scope.adding_album = {};
+          $scope.add_album_error = '';
+      }
     };
   }
 </script>
